@@ -1,3 +1,3 @@
 # rest-api-implementation
 
-# WIP. Implementing a generic RESTful API in Go without any dependencies.
+## Work in progress. Implementing a generic RESTful API in Go without any dependencies.
