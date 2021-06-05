@@ -1,13 +1,11 @@
 package routing
 
-import (
-	"net/http"
-)
+var ApiGetRecord = Route{
+	Name:   "api.get.record",
+	Method: "GET",
+}
 
-type HandlerFunc func(http.ResponseWriter, *http.Request) error
-
-func (h HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if err := h(w, r); err != nil {
-		http.Error(w, err.Error(), 500)
-	}
+var ApiRoot = Route{
+	Name:   "api.root",
+	Method: "GET",
 }

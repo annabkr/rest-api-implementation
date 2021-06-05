@@ -2,15 +2,16 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/annabkr/rest-api-implementation/api"
-	"github.com/annabkr/rest-api-implementation/server"
+	r "github.com/annabkr/rest-api-implementation/routing"
 )
 
 func main() {
-	api.InitializeRoutes()
-	onPort := ":3000"
-	err := server.ListenAndServe(onPort)
+	mux := r.Initialize()
+	api.Initialize()
+	err := http.ListenAndServe(":3000", mux)
 	if err != nil {
 		log.Fatal(err)
 	}

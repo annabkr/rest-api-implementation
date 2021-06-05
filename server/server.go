@@ -16,7 +16,7 @@ func ListenAndServe(port string) error {
 		return errors.Wrap(err, "no available ports")
 	}
 
-	log.Info(fmt.Sprintf("Listening on port: %s", port))
+	log.Info(fmt.Sprintf("Listening on port %s", port))
 
 	err = http.Serve(listener, nil)
 	if err != nil {

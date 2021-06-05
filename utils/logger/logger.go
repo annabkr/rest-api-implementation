@@ -2,7 +2,6 @@ package utils
 
 import (
 	"log"
-	"time"
 )
 
 const (
@@ -24,6 +23,5 @@ func Err(message string) {
 }
 
 func Log(level string, message string) {
-	timestamp := time.Now().String()
-	log.Printf("%s [%s]: %s", level, timestamp, message)
+	log.Printf("[%s]: %s", level, message)
 }
