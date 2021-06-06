@@ -1,8 +1,11 @@
 package errors
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+
+	log "github.com/annabkr/rest-api-implementation/utils/logger"
 )
 
 const (
@@ -12,35 +15,43 @@ const (
 )
 
 type Error struct {
-	Type       string
-	Message    string
-	StatusCode int
-	Underlying error
-	RequestId  string
+	Code       int    `json:"-"`
+	Message    string `json:"message"`
+	Underlying error  `json:"-"`
 }
 
-func (e *Error) Error() string {
-	return fmt.Sprintf("%d %s: %s", e.StatusCode, e.Type, e.Message)
+func (e Error) Error() string {
+	return string(e.Json())
 }
 
-func NewError(t string, message string, status int, underlying error, requestId string) *Error {
+func (e Error) Json() []byte {
+	data, err := json.Marshal(e)
+	if err != nil {
+		log.Warn(fmt.Sprintf("unable to marshal json: %s", err.Error()))
+	}
+	return data
+}
+
+func (e Error) StatusCode() int {
+	return e.Code
+}
+
+func NewError(message string, statusCode int, underlying error) error {
 	return &Error{
-		Type:       t,
 		Message:    message,
-		StatusCode: status,
+		Code:       statusCode,
 		Underlying: underlying,
-		RequestId:  requestId,
 	}
 }
 
-func NewBadRequestError(message string, underlying error, requestId string) *Error {
-	return NewError(BadRequest, message, http.StatusBadRequest, underlying, requestId)
+func NewBadRequestError(message string, underlying error) error {
+	return NewError(message, http.StatusBadRequest, underlying)
 }
 
-func NewNotFoundError(message string, underlying error, requestId string) *Error {
-	return NewError(NotFound, message, http.StatusNotFound, underlying, requestId)
+func NewNotFoundError(message string, underlying error, requestId string) error {
+	return NewError(message, http.StatusNotFound, underlying)
 }
 
-func NewForbiddenError(message string, underlying error, requestId string) *Error {
-	return NewError(Forbidden, message, http.StatusForbidden, underlying, requestId)
+func NewForbiddenError(message string, underlying error, requestId string) error {
+	return NewError(message, http.StatusForbidden, underlying)
 }
