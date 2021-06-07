@@ -1,3 +1,3 @@
 # rest-api-implementation
 
-Server + RESTful API in Go without any dependencies.
+Server + RESTful API template in Go without any dependencies. (Work in progress)
